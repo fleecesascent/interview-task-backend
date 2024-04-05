@@ -7,12 +7,12 @@ namespace App\Modules\Invoices\Infrastructure\Http\Api;
 use App\Domain\Invoice;
 use App\Infrastructure\Controller;
 use App\Modules\Invoices\Api\InvoicesFacadeInterface;
-use App\Modules\Invoices\Application\Exceptions\InvoiceException;
 use App\Modules\Invoices\Application\Mappers\InvoiceToArray;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class InvoicesController extends Controller
 {
@@ -38,11 +38,10 @@ class InvoicesController extends Controller
 
     public function approveInvoice(string $uuid): JsonResponse
     {
-        $invoiceId = Uuid::fromString($uuid);
-
         try {
+            $invoiceId = Uuid::fromString($uuid);
             $this->invoicesFacade->approveInvoice($invoiceId);
-        } catch (InvoiceException $exception) {
+        } catch (Throwable $exception) {
             return response()
                 ->json(['message' => $exception->getMessage()])
                 ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -55,11 +54,10 @@ class InvoicesController extends Controller
 
     public function rejectInvoice(string $uuid): JsonResponse
     {
-        $invoiceId = Uuid::fromString($uuid);
-
         try {
+            $invoiceId = Uuid::fromString($uuid);
             $this->invoicesFacade->rejectInvoice($invoiceId);
-        } catch (InvoiceException $exception) {
+        } catch (Throwable $exception) {
             return response()
                 ->json(['message' => $exception->getMessage()])
                 ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);

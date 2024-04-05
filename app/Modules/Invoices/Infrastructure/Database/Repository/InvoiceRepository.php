@@ -36,7 +36,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     {
         $invoice = Invoice::find($invoiceId);
 
-        return $this->mapToInvoiceEntity($invoice);
+        return $invoice ? $this->mapToInvoiceEntity($invoice) : null;
     }
 
     public function updateStatus(InvoiceEntity $invoice): void
